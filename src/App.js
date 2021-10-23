@@ -15,6 +15,19 @@ class App extends React.Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const localContacts = localStorage.getItem('contacts');
+    const parseLocalContacts = JSON.parse(localContacts);
+    if (parseLocalContacts) {
+      this.setState({ contacts: parseLocalContacts });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addNewContact = newContact => {
     this.state.contacts.find(contact => contact.name === newContact.name)
       ? alert(`${newContact.name} already exists`)
